@@ -13,10 +13,16 @@
 CShellCtxMenu::CShellCtxMenu()
 {
 	m_hMenuBmp=(HBITMAP)LoadImage(_Module.GetResourceInstance(),
-										MAKEINTRESOURCE(IDB_MENUBITMAP),
-											IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION);
+		MAKEINTRESOURCE(IDB_MENUBITMAP),
+		IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION);
 	if (m_hMenuBmp)
 		ReplaceDIBColor(&m_hMenuBmp, RGB(255,0,255), GetSysColor(COLOR_MENU));
+	
+	m_hMenuBmpHighlight=(HBITMAP)LoadImage(_Module.GetResourceInstance(),
+		MAKEINTRESOURCE(IDB_MENUBITMAP),
+		IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION);
+	if (m_hMenuBmpHighlight)
+		ReplaceDIBColor(&m_hMenuBmpHighlight, RGB(255,0,255), GetSysColor(COLOR_MENUHILIGHT));
 
 }
 
@@ -102,7 +108,7 @@ HRESULT CShellCtxMenu::QueryContextMenu (HMENU hmenu, UINT uMenuIndex, UINT uidF
 	}
 
 	if (!InsertMenu(hmenu, uMenuIndex, MF_STRING | MF_BYPOSITION, uCmdID++, m_sCtxExt)) return E_FAIL;
-	if (m_hMenuBmp) SetMenuItemBitmaps(hmenu, uMenuIndex, MF_BYPOSITION, m_hMenuBmp, m_hMenuBmp);
+	if (m_hMenuBmp) SetMenuItemBitmaps(hmenu, uMenuIndex, MF_BYPOSITION, m_hMenuBmp, m_hMenuBmpHighlight);
 
 return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, (uCmdID - uidFirstCmd)+1);//proper way
 }
